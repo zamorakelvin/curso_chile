@@ -5,7 +5,7 @@ const moment = require('moment');
 
 let secret = 'clave_secreta_curso';
 
-exports.createToken = (user)=>{
+exports.createToken = (user) =>{
     let payload = {
         sub: user._id,
         name: user.surname,

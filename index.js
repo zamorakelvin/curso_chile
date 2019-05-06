@@ -10,8 +10,8 @@ mongoose.connect('mongodb://localhost:27017/curso_chile', (err,res) => {
         throw err;
     }else{
         console.log("la conexión a la base de datos esta corriendo perfectamente......");
-        app.listen(port, ()=>{
-            console.log("Servior del API Rest Escuchando en http://localhost:"+port);
+        app.listen(port, () => {
+            console.log("Servior del API Rest Escuchando en http://localhost:" + port);
         });
     }
 });
