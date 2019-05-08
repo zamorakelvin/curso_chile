@@ -5,8 +5,8 @@ const fs = require('fs');
 const momgoosePaginate = require('mongoose-pagination');
 
 const Artist = require('../models/artist');
-//const Album = require('../models/albun');
-//const Song = require('../models/song');
+const Album = require('../models/album');
+const Song = require('../models/song');
 
 function getArtist(req, res){
     let artisId = req.params.id;
@@ -91,7 +91,7 @@ function deleteArtist(req, res){
             if(!artistRemoved){
                 res.status(404).send({message: 'El artista no ha sido eliminado'});
             }else{
-                Albun.find({artist: artistRemoved._id}).remove((err, albumRemoved)=>{
+                Album.find({artist: artistRemoved._id}).remove((err, albumRemoved)=>{
                     if(err){
                         res.status(500).send({message: 'Error al borrar el album'});
                     }else{
@@ -100,12 +100,12 @@ function deleteArtist(req, res){
                         }else{
                             Song.find({album: albumRemoved._id}).remove((err, songRemoved)=>{
                                  if(err){
-                                            res.status(500).send({message: 'Error al borrar la cancion'});
+                                    res.status(500).send({message: 'Error al borrar la cancion'});
                                 }else{
                                     if(!songRemoved){
                                                 res.status(404).send({message: 'La cancion no ha sido eliminada'});
                                     }else{
-                                                res.status(200).send({artistRemoved});
+                                                res.status(200).send({artist: artistRemoved});
                                     }       
                                 }
                             });
@@ -118,7 +118,7 @@ function deleteArtist(req, res){
     });
 }
 function uploadImage(req, res){
-    let artisId = req.params.id;
+    let artistId = req.params.id;
     let file_name = 'no subido...';
     if(req.files){
         
@@ -130,7 +130,7 @@ function uploadImage(req, res){
         let file_ex = ext_split[1];
         let file_ext = file_ex.toUpperCase();
         if(file_ext == 'PNG' || file_ext == 'JPG' || file_ext == 'GIT'){
-            User.findByIdAndUpdate(artistId, {image: file_name}, (err, artistUpdated) => {
+            Artist.findByIdAndUpdate(artistId, {image: file_name}, (err, artistUpdated) => {
                 //if(!artistId){
                 if(!artistUpdated){
                     res.status(404).send({massege: 'no se ha podido actualizar el Usuario'});
@@ -144,7 +144,6 @@ function uploadImage(req, res){
         res.status(200).send({message: 'no ha subido nunguna imagen'});
     }
 };
-
 function getImageFile(req, res){
     let imageFile = req.params.imageFile;
     let path_file = './uploads/artists/'+imageFile;
