@@ -1,4 +1,5 @@
 'use strict'
+
 const fs = require('fs');
 const path = require('path');
 const bcrypt = require('bcrypt-nodejs');
@@ -10,23 +11,21 @@ function prueba(req, res){
     res.status(200).send({
         message: 'probando una accion del controlador de usuarios del api rest'
     });
-}
+};
 
 function saveUser(req, res){
     let user = new User();
     let params = req.body;
-    
-    console.log(params);
-
+   
     user.name = params.name;
     user.surname = params.surname;
     user.email = params.email;
     user.role = 'ROLE ADMIN';
     user.image = 'null';
-
+    
     if(params.password){
         // Encripta contraseña
-        bcrypt.hash(params.password, null, null, function(err, hash){
+        bcrypt.hash(params.password, null, null, (err, hash) =>{
             user.password = hash;
             if(user.name != null && user.surname != null && user.email != null){
                 // Guarda el usuario
@@ -54,7 +53,7 @@ function loginUser(req, res){
     let params = req.body;
     let email = params.email;
     let password = params.password;
-
+    
     User.findOne({email: email.toLowerCase()}, (err, user) =>{
         if(err){
             res.status(500).send({message: 'Error en la Petición'});
@@ -63,7 +62,7 @@ function loginUser(req, res){
                 res.status(404).send({message: 'Lo siento, El usuario no existe'});
             }else{
                 // Comprobar contraseña
-                bcrypt.compare(password, user.password, (err, check)=>{
+                bcrypt.compare(password, user.password, (err, check) => {
                     if(check){
                         //devolver los datos del usuario logueado
                         if(params.gethash){
@@ -82,6 +81,7 @@ function loginUser(req, res){
         }
     });
 }
+
 function updateUser(req, res){
     let userId = req.params.id;
     let update = req.body;
@@ -126,20 +126,19 @@ function uploadImage(req, res) {
     }else{
         res.status(200).send({message: 'no ha subido nunguna imagen'});
     }
-}
+};
 
 function getImageFile(req, res){
     let imageFile = req.params.imageFile;
     let path_file = './uploads/users/'+imageFile;
-    fs.exists(path_file, (exists) => {
+    fs.exists(path_file, (exists) =>{
         if(exists){
             res.sendFile(path.resolve(path_file));
         }else{
-            res.status(200).send({message: 'No existe la Imagen'});
+            res.status(200).send({message: 'No existe la imagen'});
         }
     });
-}
-
+};
 module.exports = {
     prueba,
     saveUser,
