@@ -11,8 +11,7 @@ function prueba(req, res){
     res.status(200).send({
         message: 'probando una accion del controlador de usuarios del api rest'
     });
-};
-
+}
 function saveUser(req, res){
     let user = new User();
     let params = req.body;
@@ -47,8 +46,7 @@ function saveUser(req, res){
     }else{
         res.status(200).send({message: 'introduce la contraseña, por favor'});
     }
-};
-
+}
 function loginUser(req, res){
     let params = req.body;
     let email = params.email;
@@ -81,7 +79,6 @@ function loginUser(req, res){
         }
     });
 }
-
 function updateUser(req, res){
     let userId = req.params.id;
     let update = req.body;
@@ -98,12 +95,10 @@ function updateUser(req, res){
 
     });
 }
-
 function uploadImage(req, res) { 
     
     let userId = req.params.id;
     //let file_name = 'no se ha subido';
-    
     if(req.files){
         
         let file_path = req.files.image.path;

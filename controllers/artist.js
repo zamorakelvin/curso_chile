@@ -9,20 +9,25 @@ const Album = require('../models/album');
 const Song = require('../models/song');
 
 function getArtist(req, res){
-    let artisId = req.params.id;
-
-    Artist.findById(artisId, (err, artist) => {
-        if(err){
-            res.ststus(500).send({message: 'Error en la peticion'});
+    let artist = req.params.id;
+    
+    Artist.findById(artist , (err, artist) => {
+    
+        if(err){   
+            res.status(500).send({message: 'Error en la peticion'});
+            
         }else{
             if(!artist){
                 res.status(404).send({message: 'El artita no existe'});
             }else{
                 res.status(200).send({artist});
+                
             }
         }
     });
+    
     res.status(200).send({message: 'Metodo getArtist del controlado'});
+    
 }
 function saveArtist(req, res){
     let artist = new Artist();
@@ -31,7 +36,7 @@ function saveArtist(req, res){
     artist.description = params.description;
     artist.image = 'null';
 
-    artist.save((err,artistStored) =>{
+    artist.save((err, artistStored) =>{
         if (err){
             res.status(500).send({message: 'Error al guardar el artita'});
         }else{

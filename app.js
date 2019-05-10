@@ -9,6 +9,7 @@ let app = express();
 const user_routes = require('./routes/user');
 const artist_routes = require('./routes/artist');
 const album_routes = require('./routes/album');
+const song_routes = require('./routes/song');
 
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
@@ -19,6 +20,7 @@ app.use(bodyParser.json());
 app.use('/api', user_routes);
 app.use('/api', artist_routes);
 app.use('/api', album_routes);
+app.use('/api', song_routes);
 /* se utilizo para probar que el servidor este funcionando
 app.get('/prueba', (req, res)=>{
     res.status(200).send({message: 'Biemvenidos al curso'});
