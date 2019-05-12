@@ -4,9 +4,9 @@ const ArtistController = require('../controllers/artist');
 const api = express.Router();
 const md_auth = require('../middlewares/authenticated');
 let multipart = require('connect-multiparty');
-let md_upload = multipart({uploadDir: './uploads/artists'});
+let md_upload = multipart({uploadDir:'./uploads/artists'});
 
-api.get('/artist/:id', md_auth.ensureAuth, ArtistController.getArtist);
+api.get('/artist/:id', ArtistController.getArtist);
 api.post('/artist', md_auth.ensureAuth, ArtistController.saveArtist);
 api.get('/artists/page?', md_auth.ensureAuth, ArtistController.getArtists);
 api.put('/artist/:id', md_auth.ensureAuth, ArtistController.updateArtist);

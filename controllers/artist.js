@@ -9,19 +9,24 @@ const Album = require('../models/album');
 const Song = require('../models/song');
 
 function getArtist(req, res){
+    let artisttest = new Artist();
     let artist = req.params.id;
-    
-    Artist.findById(artist , (err, artist) => {
-    
+    console.log(artist);
+    // return res.status(200).send({
+    //     _id: "5ccc74182c510a8dd2b5c871",
+    //     name: "Dellafuente",
+    //     description: "Musica Trap",
+    //     Imagen: "null"
+    // });
+    artisttest.findById(artist, (err, artist) => {
+        res.status(200).send({artist});
         if(err){   
             res.status(500).send({message: 'Error en la peticion'});
-            
         }else{
             if(!artist){
                 res.status(404).send({message: 'El artita no existe'});
             }else{
-                res.status(200).send({artist});
-                
+                res.status(200).send({artist: artist});
             }
         }
     });
@@ -43,6 +48,7 @@ function saveArtist(req, res){
             if(!artistStored){
                 res.status(404).send({message: 'El artrista no ha sido guardado'});
             }else{
+                console.log(artistStored);
                 res.status(200).send({artist: artistStored});
             }
         }
@@ -55,6 +61,8 @@ function getArtists(req, res){
         let page = 1;
     }
     let itemsPerPage = 3;
+
+    Artist.find()
 
     Artist.find().sort('name').paginate(page, itemsPerPage, (err, artist, total)=>{
         if (err){
@@ -96,14 +104,14 @@ function deleteArtist(req, res){
             if(!artistRemoved){
                 res.status(404).send({message: 'El artista no ha sido eliminado'});
             }else{
-                Album.find({artist: artistRemoved._id}).remove((err, albumRemoved)=>{
+                Album.find({artist: artistRemoved._id}).remove((err, albumRemoved) =>{
                     if(err){
                         res.status(500).send({message: 'Error al borrar el album'});
                     }else{
                         if(!albumRemoved){
                             res.status(404).send({message: 'El albun no ha sido eliminado'});
                         }else{
-                            Song.find({album: albumRemoved._id}).remove((err, songRemoved)=>{
+                            Song.find({album: albumRemoved._id}).remove((err, songRemoved) =>{
                                  if(err){
                                     res.status(500).send({message: 'Error al borrar la cancion'});
                                 }else{
